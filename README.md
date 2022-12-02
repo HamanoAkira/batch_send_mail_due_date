@@ -28,7 +28,7 @@ Given the current date, this simple batch will print out all deal's due date.
 
 ## Logic behind
 - Batch will run daily except for holiday
-- Batch will send mail 3s day before due date of deals (only count work days)
+- Batch will send mail 3 days before due date of deals (only count work days)
 - On one day batch can get multiple deals base on condition of that day
 - After getting first deal, if the next day also has a deal and is holiday then it will be added to list deal recursively
 - Ex:
