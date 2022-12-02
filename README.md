@@ -1,10 +1,7 @@
 # SEND MAIL BATCH
 
----
-
 ## Table of contents
 
----
 * [General Info](#general-info)
 * [Technologies](#technologies)
 * [Install](#install)
@@ -13,18 +10,15 @@
 
 ## General Info
 
----
 Given the current date, this simple batch will print out all deal's due date.
 
 ## Technologies
 
----
 * PHP: 8.0
 * OS: Windows 11
 
 ## Install
 
----
 * Clone this project
 * Cd to project folder and run composer install:
 ```
@@ -33,7 +27,6 @@ Given the current date, this simple batch will print out all deal's due date.
 
 ## How to use
 
----
 ###### 1. Use as a daily batch
 In case you want to run it daily
 - Run this following command to create scheduled task:
