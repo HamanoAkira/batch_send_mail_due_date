@@ -103,11 +103,11 @@ final class BatchTest extends TestCase
   public function testRunBatchOnHoliday()
   {
     $batch = new Batch('2022-08-07', '3');
-    $this->assertEquals('2022-08-07: Not working on holiday.', $batch->addBusinessDay());
+    $this->assertEquals('', $batch->addBusinessDay());
 
     $holidayFile = self::DATA_DIR . 'holiday_default.php';
     $batch = new Batch('2022-08-11', '3', null, $holidayFile);
-    $this->assertEquals('2022-08-11: Not working on holiday.', $batch->addBusinessDay());
+    $this->assertEquals('', $batch->addBusinessDay());
   }
   
   public function testSend1DayBeforeDueDate()
@@ -125,7 +125,7 @@ final class BatchTest extends TestCase
     );
 
     $batch = new Batch('2022-08-05', '1', $dealFile, $holidayFile);
-    $this->assertEquals('2022-08-05 => deals: 2022-08-08', $batch->addBusinessDay());
+    $this->assertEquals('2022-08-05 => deals: 2022-08-08, 2022-08-08', $batch->addBusinessDay());
 
     $batch = new Batch('2022-08-10', '1', $dealFile, $holidayFile);
     $this->assertEquals(

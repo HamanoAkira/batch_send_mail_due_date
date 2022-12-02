@@ -5,6 +5,7 @@
 * [General Info](#general-info)
 * [Technologies](#technologies)
 * [Install](#install)
+* [Logic behind](#logic-behind)
 * [How to use](#how-to-use)
 
 
@@ -24,6 +25,37 @@ Given the current date, this simple batch will print out all deal's due date.
 ```
 > composer install
 ```
+
+## Logic behind
+- Batch will run daily except for holiday
+- Batch will send mail 3s day before due date of deals (only count work days)
+- On one day batch can get multiple deals base on condition of that day
+- After getting first deal, if the next day also has a deal and is holiday then it will be added to list deal recursively
+- Ex:
+
+Deals table
+
+| deal_id | due_date   |
+|---------|------------|
+| 1111    | 2022-08-08 |
+| 2222    | 2022-08-08 |
+| 3333    | 2022-08-11 |
+| 4444    | 2022-08-12 |
+| 5555    | 2022-08-13 |
+| 6666    | 2022-08-15 |
+| ...     | ...        |
+
+
+<br />
+List holiday
+
+| date | 2022-08-07 | 2022-08-08 | 2022-08-09 | 2022-08-10 | 2022-08-11 | 2022-08-12 | 2022-08-13 | 2022-08-14 | 2022-08-15 | 2022-08-16 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| | CN | Mon | Tue | Wed | Thur | Fri | Sat | Sun | Mon | Tue |
+| isHoliday | 1 | 0 | 0 | 0 | 1 | 0 | 1 | 1 | 0 | 0 |
+
+- Batch run on 2022-08-08 will print out 2022-08-12, 2022-08-13
+- Batch run on 2022-08-09 will print out 2022-08-15
 
 ## How to use
 

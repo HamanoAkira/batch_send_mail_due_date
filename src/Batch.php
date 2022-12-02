@@ -23,7 +23,8 @@ class Batch
     ['id' => 6, 'due_date' => '2022-08-06'],
     ['id' => 7, 'due_date' => '2022-08-07'],
     ['id' => 8, 'due_date' => '2022-08-08'],
-    ['id' => 9, 'due_date' => '2022-08-09'],
+    ['id' => 9, 'due_date' => '2022-08-08'],
+    ['id' => 10, 'due_date' => '2022-08-09'],
     ['id' => 11, 'due_date' => '2022-08-11'],
     ['id' => 12, 'due_date' => '2022-08-12'],
     ['id' => 13, 'due_date' => '2022-08-13'],
@@ -105,13 +106,26 @@ class Batch
     return $key !== false;
   }
 
-  private function isDealExist(string $date): bool
+//  private function isDealExist(string $date): bool
+//  {
+//    $key = array_search($date, array_column($this->deals, 'due_date'));
+//    return $key !== false;
+//  }
+
+  private function getDeals(string $date): array
   {
-    $key = array_search($date, array_column($this->deals, 'due_date'));
-    return $key !== false;
+    $listDeal = [];
+    
+    foreach ($this->deals as $deal) {
+      if ($deal['due_date'] === $date) {
+        $listDeal[] = $date;
+      }
+    }
+    
+    return $listDeal;
   }
 
-  function getDeals(DateTime $day, int $number = 3): string | array
+  function getDealList(DateTime $day, int $number = 3): string | array
   {
     $intervalDate = 0;
     $listDeal = [];
@@ -132,17 +146,20 @@ class Batch
       }
       $dueDate = $dueDate->modify("+1 days");
     }
+    
+    $deals = $this->getDeals($dueDate->format('Y-m-d'));
 
-    if ($this->isDealExist($dueDate->format('Y-m-d'))) {
-      $listDeal[] = $dueDate->format('Y-m-d');
+    if (count($deals)) {
+      $listDeal = array_merge($listDeal, $deals);
     }
 
     $nextDueDate = $dueDate->modify("+1 days");
 
     // get deals that are
     while ($this->isHoliday($nextDueDate)) {
-      if ($this->isDealExist($nextDueDate->format('Y-m-d'))) {
-        $listDeal[] = $nextDueDate->format('Y-m-d');
+      $nextDue = $this->getDeals($nextDueDate->format('Y-m-d'));
+      if (count($nextDue)) {
+        $listDeal = array_merge($listDeal, $nextDue);
       }
       $nextDueDate = $nextDueDate->modify("+1 days");
     }
@@ -159,7 +176,7 @@ class Batch
     }
     
     $currentDay = new DateTime($this->day->format('Y-m-d'));
-    $result = $this->getDeals($currentDay, $this->number);
+    $result = $this->getDealList($currentDay, $this->number);
 
     if (is_array($result)) {
       return $this->day->format('Y-m-d') . ' => deals: ' . implode(', ', $result);
